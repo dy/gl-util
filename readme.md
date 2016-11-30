@@ -16,12 +16,12 @@ Get/set current program.
 ### `uniform(gl, name, data?)`
 ### `uniform(gl, {name: data, ...})`
 
-Get/set uniform or multiple uniforms for webgl context. Returns object with uniform parameters: `{name, location, data, type}`.
+Get/set uniform or multiple uniforms. Returns object with uniform parameters: `{name, location, data, type}`.
 
 ### `texture(gl, name, data|parameters?)`
 ### `texture(gl, {name: data|parameters, ...})`
 
-Set data to texture, or set texture parameters:
+Set texture[s] data or parameters:
 
 | Name | Meaning |
 |---|---|
@@ -39,7 +39,7 @@ Returns object with texture properties `{data, index, minFilter, magFilter, wrap
 ### `attribute(gl, name, data|parameters?)`
 ### `attribute(gl, {name: data|parameters, ...})`
 
-Set data for attribute or multiple attributes. Also can be passed attribute parameters:
+Set attribute[s] data or parameters:
 
 | Name | Default | Meaning |
 |---|---|---|
