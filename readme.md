@@ -5,13 +5,10 @@ Set of practical functions for webgl.
 [![npm install gl-util](https://nodei.co/npm/gl-util.png?mini=true)](https://npmjs.org/package/gl-util/)
 
 
+### `program(gl, program?)`
 ### `program(gl, vertSource, fragSource)`
 
-Create program from vertex and fragment sources, make it active. Returns _WebGLProgram_ instance.
-
-### `program(gl, program?)`
-
-Get/set current program.
+Get/set current program or create new program from vertex and fragment sources.
 
 ### `uniform(gl, name, data?)`
 ### `uniform(gl, {name: data, ...})`
@@ -26,7 +23,7 @@ Set texture[s] data or parameters:
 | Name | Meaning |
 |---|---|
 | `data` | Data passed to texture. |
-| `index` | Spot number, if undefined - calculated automatically. |
+| `index` | Texture unit number, if undefined - calculated automatically. |
 | `filter` | Sets texture scaling for both min and mag. Can be defined as two separate properties `minFilter` and `magFilter`. By default `gl.LINEAR`. |
 | `wrap` | Defines texture tiling vertically and horizontally. Can be defined precisely as `wrapS` and `wrapT`. By default `gl.MIRRORED_REPEAT`. |
 | `width` | In pixels |
