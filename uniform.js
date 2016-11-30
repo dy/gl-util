@@ -28,6 +28,10 @@ module.exports = function setUniform (gl, name, options) {
 	if (!program) throw Error('Context has no active program');
 
 	let uniforms = uniformsCache.has(gl) ? uniformsCache.get(gl) : uniformsCache.set(gl, {}).get(gl);
+
+	//return all uniforms if no name provided
+	if (!name) return uniforms;
+
 	let uniform = uniforms[name];
 
 	//autoinit uniform(s)

@@ -1,13 +1,10 @@
 const gl = require('webgl-context')()
-const program = require('./program')
-const uniform = require('./uniform')
-const texture = require('./texture')
-const attribute = require('./attribute')
+const util = require('./')
 
 
 document.body.appendChild(gl.canvas);
 
-program(gl, `
+util.program(gl, `
 	precision mediump float;
 
 	attribute vec2 position;
@@ -26,13 +23,13 @@ program(gl, `
 `);
 
 
-attribute(gl, 'position', {data: [0,0,1,0,0,1], size: 2});
-uniform(gl, 'color', [1, .2, 0, 1.]);
+util.attribute(gl, 'position', {data: [0,0,1,0,0,1], size: 2});
+util.uniform(gl, 'color', [1, .2, 0, 1.]);
 gl.drawArrays(gl.TRIANGLES, 0, 3);
 
 
 setTimeout(function () {
-	attribute(gl, 'position', {data: [0,0,.5,0,0,.5], size: 2});
-	uniform(gl, 'color', [1, .8, 0, 1.]);
+	util.attribute(gl, 'position', {data: [0,0,.5,0,0,.5], size: 2});
+	util.uniform(gl, 'color', [1, .8, 0, 1.]);
 	gl.drawArrays(gl.TRIANGLES, 0, 3);
-},1000);
+}, 1000);

@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function program (gl, vSrc, fSrc) {
+module.exports = function setProgram (gl, vSrc, fSrc) {
 	if (!gl) throw Error('WebGL context is not provided')
 
 	//if just getProgram

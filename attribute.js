@@ -27,6 +27,10 @@ module.exports = function setAttribute (gl, name, options) {
 	if (!program) throw Error('Context has no active program');
 
 	let attributes = attributesCache.has(gl) ? attributesCache.get(gl) : attributesCache.set(gl, {}).get(gl);
+
+	//return all attribs if no name provided
+	if (!name) return attributes;
+
 	let attribute = attributes[name];
 
 	//if attribute exists and ony the data passed - just update buffer data
