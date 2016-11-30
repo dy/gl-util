@@ -2,13 +2,20 @@
 
 const isBrowser = require('is-browser')
 const isPlainObject = require('is-plain-obj')
+const getProgram = require('./program')
 
-let texturesCache = new WeakMap();
+let texturesCache = setTexture.cache = new WeakMap();
 let texturesIdx = new WeakMap();
 
 
-module.exports = function setTexture (gl, name, options) {
+module.exports = setTexture;
+
+
+function setTexture (gl, name, options, program) {
 	if (!gl) throw Error('WebGL context is not provided');
+
+	if (!program) program = getProgram(gl);
+	if (!program) throw Error('Context has no active program');
 
 	//object with textures passed
 	if (name && typeof name != 'string') {
@@ -16,16 +23,13 @@ module.exports = function setTexture (gl, name, options) {
 		let textures = name;
 
 		for (let name in textures) {
-			result[name] = setTexture(gl, name, textures[name]);
+			result[name] = setTexture(gl, name, textures[name], program);
 		}
 
 		return result;
 	}
 
-	let program = gl.getParameter(gl.CURRENT_PROGRAM);
-	if (!program) throw Error('Context has no active program');
-
-	let textures = texturesCache.has(gl) ? texturesCache.get(gl) : texturesCache.set(gl, {}).get(gl);
+	let textures = texturesCache.has(program) ? texturesCache.get(program) : texturesCache.set(program, {}).get(program);
 
 	//return all textures if no name provided
 	if (!name) return textures;
@@ -61,10 +65,10 @@ module.exports = function setTexture (gl, name, options) {
 
 
 	if (texture.index == null || options.index != null) {
-		let textureCount = texturesIdx.get(gl) || 0;
+		let textureCount = texturesIdx.get(program) || 0;
 		texture.index = options.index != null ? options.index : textureCount++;
 		textureCount = Math.max(textureCount, texture.index);
-		texturesIdx.set(gl, textureCount);
+		texturesIdx.set(program, textureCount);
 		texture.location && gl.uniform1i(texture.location, texture.index);
 	}
 
@@ -125,11 +129,13 @@ module.exports = function setTexture (gl, name, options) {
 				return texture;
 			}
 			image.addEventListener('load', () => {
-				setTexture(gl, name, image)
+				setTexture(gl, name, image, program)
 			});
 			data = null;
 		}
 	}
+
+	if (texture.level == null) texture.level = 0;
 
 	//handle raw data case
 	if (data == null || Array.isArray(data) || ArrayBuffer.isView(data)) {
@@ -144,12 +150,12 @@ module.exports = function setTexture (gl, name, options) {
 		}
 		texture.data = data == null ? null : texture.type === gl.FLOAT ? new Float32Array(data) : texture.type === gl.UNSIGNED_SHORT ? new Uint16Array(data) : new Uint8Array(data);
 
-		gl.texImage2D(gl.TEXTURE_2D, 0, texture.format, texture.width, texture.height, 0, texture.format, texture.type, texture.data);
+		gl.texImage2D(gl.TEXTURE_2D, texture.level, texture.format, texture.width, texture.height, 0, texture.format, texture.type, texture.data);
 	} else {
 		texture.width = data && data.width || 1;
 		texture.height = data && data.height || 1;
 		texture.data = data;
-		gl.texImage2D(gl.TEXTURE_2D, 0, texture.format, texture.format, texture.type, texture.data);
+		gl.texImage2D(gl.TEXTURE_2D, texture.level, texture.format, texture.format, texture.type, texture.data);
 	}
 
 	return texture;

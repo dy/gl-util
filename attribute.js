@@ -2,13 +2,18 @@
 
 const isPlainObject = require('is-plain-obj');
 const extend = require('object-assign');
+const getProgram = require('./program')
 
 
-let attributesCache = new WeakMap();
+let attributesCache = setAttribute.cache = new WeakMap();
 let attributesIdx = new WeakMap();
 
-module.exports = function setAttribute (gl, name, options) {
+module.exports = setAttribute;
+
+function setAttribute (gl, name, options, program) {
 	if (!gl) throw Error('WebGL context is not provided');
+	if (!program) program = getProgram(gl);
+	if (!program) throw Error('Context has no active program');
 
 	//object with attributes passed
 	if (name && typeof name != 'string') {
@@ -16,17 +21,14 @@ module.exports = function setAttribute (gl, name, options) {
 		let attributes = name;
 
 		for (let name in attributes) {
-			result[name] = setAttribute(gl, name, attributes[name]);
+			result[name] = setAttribute(gl, name, attributes[name], program);
 		}
 
 		return result;
 	}
 
 
-	let program = gl.getParameter(gl.CURRENT_PROGRAM);
-	if (!program) throw Error('Context has no active program');
-
-	let attributes = attributesCache.has(gl) ? attributesCache.get(gl) : attributesCache.set(gl, {}).get(gl);
+	let attributes = attributesCache.has(program) ? attributesCache.get(program) : attributesCache.set(program, {}).get(program);
 
 	//return all attribs if no name provided
 	if (!name) return attributes;
@@ -127,10 +129,10 @@ module.exports = function setAttribute (gl, name, options) {
 
 	//set index if undefined
 	if (attribute.index == null) {
-		let topIndex = attributesIdx.get(gl) || 0;
+		let topIndex = attributesIdx.get(program) || 0;
 		attribute.index = topIndex++;
 		topIndex = Math.max(topIndex, attribute.index);
-		attributesIdx.set(gl, topIndex);
+		attributesIdx.set(program, topIndex);
 	}
 
 	if (!attribute.size) {

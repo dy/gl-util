@@ -8,21 +8,21 @@ Set of practical functions for webgl.
 ### `program(gl, program?)`
 ### `program(gl, vertSource, fragSource)`
 
-Get/set current program or create new program from vertex and fragment sources.
+Get/set active program or create new program from vertex and fragment sources. The _WebGLProgram_ instance is returned.
 
-### `uniform(gl, name?, data?)`
-### `uniform(gl, {name: data, ...})`
+### `uniform(gl, name?, data?, program?)`
+### `uniform(gl, {name: data, ...}, program?)`
 
-Get/set uniform or multiple uniforms. Returns object with uniform parameters: `{name, location, data, type}`.
+Get/set uniform or multiple uniforms. Returns object with uniform parameters: `{name, location, data, type}`. Uniforms are stored per-program instance, so to make sure right program is active before updating uniforms a `program` can be passed as the last argument.
 
-### `texture(gl, name?, data|parameters?)`
-### `texture(gl, {name: data|parameters, ...})`
+### `texture(gl, name?, data|parameters?, program?)`
+### `texture(gl, {name: data|parameters, ...}, program?)`
 
 Set texture[s] data or parameters:
 
 | Name | Meaning |
 |---|---|
-| `data` | Data passed to texture. |
+| `data` | Data passed to texture. Can be array, typed array, image, canvas or string denoting the URL of image to load. |
 | `index` | Texture unit number, if undefined - calculated automatically. |
 | `filter` | Sets texture scaling for both min and mag. Can be defined as two separate properties `minFilter` and `magFilter`. By default `gl.LINEAR`. |
 | `wrap` | Defines texture tiling vertically and horizontally. Can be defined precisely as `wrapS` and `wrapT`. By default `gl.MIRRORED_REPEAT`. |
@@ -30,11 +30,12 @@ Set texture[s] data or parameters:
 | `height` | In pixels |
 | `format` | By default `gl.RGBA` |
 | `type` | `gl.UNSIGNED_BYTE`, can be `gl.FLOAT` with proper extension enabled |
+| `level` | `0`, mipmap level. |
 
-Returns object with texture properties `{data, index, minFilter, magFilter, wrapS, wrapT, width, height, format, type}`.
+Returns object with texture properties `{data, index, location, minFilter, magFilter, wrapS, wrapT, width, height, format, type}`.
 
-### `attribute(gl, name?, data|parameters?)`
-### `attribute(gl, {name: data|parameters, ...})`
+### `attribute(gl, name?, data|parameters?, program?)`
+### `attribute(gl, {name: data|parameters, ...}, program?)`
 
 Set attribute[s] data or parameters:
 
@@ -51,9 +52,7 @@ Set attribute[s] data or parameters:
 | `target` | `gl.ARRAY_BUFFER` | |
 | `buffer` | `null` | WebGLBuffer to use for attribute |
 
-Returns attribute properties `{data, size, stride, offset, usage, type, normalized, index, target, buffer}`
-
-Related docs: [vertexAttribPointer](https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/vertexAttribPointer).
+Returns attribute properties `{data, size, stride, offset, usage, type, normalized, index, target, buffer}`.
 
 ## Motivation
 

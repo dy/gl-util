@@ -1,6 +1,11 @@
 'use strict'
 
-module.exports = function setProgram (gl, vSrc, fSrc) {
+let programsCache = setProgram.programsCache = new WeakMap();
+
+module.exports = setProgram;
+
+
+function setProgram (gl, vSrc, fSrc) {
 	if (!gl) throw Error('WebGL context is not provided')
 
 	//if just getProgram

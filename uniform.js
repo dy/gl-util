@@ -5,12 +5,17 @@
 const isPlainObject = require('is-plain-obj');
 const isInt = require('number-is-integer');
 const extend = require('object-assign');
+const getProgram = require('./program')
 
+let uniformsCache = setUniform.cache = new WeakMap();
 
-let uniformsCache = new WeakMap();
+module.exports = setUniform;
 
-module.exports = function setUniform (gl, name, options) {
+function setUniform (gl, name, options, program) {
 	if (!gl) throw Error('WebGL context is not provided');
+
+	if (!program) program = getProgram(gl);
+	if (!program) throw Error('Context has no active program');
 
 	//object with uniforms passed
 	if (name && typeof name != 'string') {
@@ -18,16 +23,13 @@ module.exports = function setUniform (gl, name, options) {
 		let uniforms = name;
 
 		for (let name in uniforms) {
-			result[name] = setUniform(gl, name, uniforms[name]);
+			result[name] = setUniform(gl, name, uniforms[name], program);
 		}
 
 		return result;
 	}
 
-	let program = gl.getParameter(gl.CURRENT_PROGRAM);
-	if (!program) throw Error('Context has no active program');
-
-	let uniforms = uniformsCache.has(gl) ? uniformsCache.get(gl) : uniformsCache.set(gl, {}).get(gl);
+	let uniforms = uniformsCache.has(program) ? uniformsCache.get(program) : uniformsCache.set(program, {}).get(program);
 
 	//return all uniforms if no name provided
 	if (!name) return uniforms;
