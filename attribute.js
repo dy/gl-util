@@ -1,0 +1,173 @@
+'use strict'
+
+const isPlainObject = require('is-plain-obj');
+const isInt = require('number-is-integer');
+const extend = require('object-assign');
+
+
+let attributesCache = new WeakMap();
+let attributesIdx = new WeakMap();
+
+module.exports = function setAttribute (gl, name, options) {
+	if (!gl) throw Error('WebGL context is not provided');
+
+	//object with attributes passed
+	if (name && typeof name != 'string') {
+		let result = {};
+		let attributes = name;
+
+		for (let name in attributes) {
+			result[name] = setAttribute(gl, name, attributes[name]);
+		}
+
+		return result;
+	}
+
+
+	let program = gl.getParameter(gl.CURRENT_PROGRAM);
+	if (!program) throw Error('Context has no active program');
+
+	let attributes = attributesCache.has(gl) ? attributesCache.get(gl) : attributesCache.set(gl, {}).get(gl);
+	let attribute = attributes[name];
+
+	//if attribute exists and ony the data passed - just update buffer data
+	if (attribute) {
+		if (options && attribute.data && !isPlainObject(options) && options.length <= attribute.data.length) {
+			gl.bindBuffer(attribute.target, attribute.buffer);
+			if (attribute.target === gl.ELEMENT_ARRAY_BUFFER) {
+				attribute.data = new Uint16Array(opts[name]);
+			}
+			else if (attribute.type === gl.FLOAT) {
+				attribute.data = new Float32Array(opts[name]);
+			}
+			else if (attribute.type === gl.UNSIGNED_BYTE) {
+				attribute.data = new Uint8Array(opts[name]);
+			}
+			gl.bufferSubData(attribute.target, 0, attribute.data);
+		}
+		return attribute;
+	}
+
+	//autoinit attribute(s)
+	else {
+		let count = gl.getProgramParameter(program, gl.ACTIVE_ATTRIBUTES);
+
+		for (var i=0; i < count; ++i) {
+			let info = gl.getActiveAttrib(program, i);
+			if (!info) continue;
+			let type = info.type, size = info.size;
+			switch (info.type) {
+				case gl.FLOAT_VEC2:
+				case gl.FLOAT_VEC3:
+				case gl.FLOAT_VEC4:
+				case gl.FLOAT_MAT2:
+				case gl.FLOAT_MAT3:
+				case gl.FLOAT_MAT4:
+					type = gl.FLOAT;
+					break;
+				case gl.INT_VEC2:
+				case gl.INT_VEC3:
+				case gl.INT_VEC4:
+				case gl.INT_MAT2:
+				case gl.INT_MAT3:
+				case gl.INT_MAT4:
+					type = gl.UNSIGNED_INT;
+					break;
+			}
+			switch (info.type) {
+				case gl.FLOAT_VEC2:
+				case gl.INT_VEC2:
+						size = 2;
+						break;
+				case gl.FLOAT_VEC3:
+				case gl.INT_VEC3:
+						size = 3;
+						break;
+				case gl.FLOAT_VEC4:
+				case gl.INT_VEC4:
+				case gl.FLOAT_MAT2:
+						size = 4;
+						break;
+				case gl.FLOAT_MAT3:
+						size = 9;
+						break;
+				case gl.FLOAT_MAT4:
+						size = 16;
+						break;
+			}
+			attributes[name] = {name: info.name, type: type, size: size, data: null}
+		}
+
+		if (!attributes[name]) attributes[name] = {name: name, data: null, type: null, size: null}
+
+		attribute = attributes[name];
+	}
+
+	//if no options passed - just return known attribute info
+	if (options == null) return attribute;
+
+	if (!isPlainObject(options)) options = {data: options};
+
+	extend(attribute, options);
+
+	//detect target
+	if (!attribute.target) {
+		attribute.target = gl.ARRAY_BUFFER;
+	}
+
+	if (!attribute.buffer) {
+		attribute.buffer = gl.createBuffer();
+	}
+
+	if (!attribute.usage) {
+		attribute.usage = gl.STATIC_DRAW;
+	}
+
+	//set index if undefined
+	if (attribute.index == null) {
+		let topIndex = attributesIdx.get(gl) || 0;
+		attribute.index = topIndex++;
+		topIndex = Math.max(topIndex, attribute.index);
+		attributesIdx.set(gl, topIndex);
+	}
+
+	if (!attribute.size) {
+		attribute.size = 2;
+	}
+
+	if (!attribute.type) {
+		attribute.type = attribute.target === gl.ELEMENT_ARRAY_BUFFER ? gl.UNSIGNED_SHORT : gl.FLOAT;
+	}
+
+	if (Array.isArray(attribute.data)) {
+		if (attribute.type === gl.FLOAT) {
+			attribute.data = new Float32Array(attribute.data);
+		}
+		else if (attribute.type === gl.UNSIGNED_BYTE) {
+			attribute.data = new Uint8Array(attribute.data);
+		}
+		else if (attribute.type === gl.UNSIGNED_SHORT) {
+			attribute.data =  new Uint16Array(attribute.data);
+		}
+	}
+
+	if (attribute.normalized == null) {
+		attribute.normalized = false;
+	}
+
+	if (attribute.stride == null) {
+		attribute.stride = 0;
+	}
+
+	if (attribute.offset == null) {
+		attribute.offset = 0;
+	}
+
+	gl.bindBuffer(attribute.target, attribute.buffer);
+	gl.bufferData(attribute.target, attribute.data, attribute.usage);
+	gl.enableVertexAttribArray(attribute.index);
+	gl.vertexAttribPointer(attribute.index, attribute.size, attribute.type, attribute.normalized, attribute.stride, attribute.offset);
+	gl.bindAttribLocation(program, attribute.index, attribute.name);
+
+	return attribute;
+}

@@ -1,0 +1,30 @@
+{
+  "name": "gl-util",
+  "version": "1.0.0",
+  "description": "Set of practical webgl utils",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dfcreative/gl-util.git"
+  },
+  "keywords": [
+    "gl",
+    "webgl",
+    "stack.gl"
+  ],
+  "author": "Dima Yv <dfcreative@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dfcreative/gl-util/issues"
+  },
+  "homepage": "https://github.com/dfcreative/gl-util#readme",
+  "dependencies": {
+    "is-plain-obj": "^1.1.0",
+    "number-is-integer": "^1.0.1",
+    "object-assign": "^4.1.0",
+    "webgl-context": "^2.2.0"
+  }
+}
