@@ -58,6 +58,6 @@ Returns attribute properties `{data, size, stride, offset, usage, type, normaliz
 
 There are [regl](https://github.com/regl-project/regl) and other [stack.gl](https://github.com/stackgl/) components like _gl-texture_, _gl-shader_ etc, so why bother?
 
-Because their API may give hard time remembering, same as pure webgl methods. Also _gl-util_s do not supersede webgl API, so that allows for debugging pure webgl for a moment if one need to. Also if one need minimalistic webgl setup it may be better to opt for a couple of functions over relatively massive stack.gl components.
+Because their API may give hard time remembering, same as pure webgl methods. Also _gl-utils_ do not supersede webgl API, so that allows for debugging pure webgl for a moment if one need to. Also if one need minimalistic webgl setup it may be better to opt for a couple of functions over relatively massive stack.gl components.
 
 _gl-util_ is like functions from any webgl tutorial. Tiny, handy and already familiar, so.
