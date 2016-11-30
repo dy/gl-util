@@ -47,8 +47,8 @@ module.exports = function setAttribute (gl, name, options) {
 				attribute.data = new Uint8Array(options);
 			}
 			gl.bufferSubData(attribute.target, 0, attribute.data);
+			return attribute;
 		}
-		return attribute;
 	}
 
 	//autoinit attribute(s)
@@ -110,7 +110,6 @@ module.exports = function setAttribute (gl, name, options) {
 	if (options == null) return attribute;
 
 	if (!isPlainObject(options)) options = {data: options};
-
 	extend(attribute, options);
 
 	//detect target
