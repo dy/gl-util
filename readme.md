@@ -11,7 +11,7 @@ Create program from vertex and fragment sources, make it active. Returns _WebGLP
 
 ### `program(gl, program?)`
 
-Can be _WebGLProgram_ instance passed to make active program. By default just returns current program.
+Get/set current program.
 
 ### `uniform(gl, name, data?)`
 ### `uniform(gl, {name: data, ...})`
