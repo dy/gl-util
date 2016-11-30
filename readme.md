@@ -5,38 +5,41 @@ Set of practical functions for webgl.
 [![npm install gl-util](https://nodei.co/npm/gl-util.png?mini=true)](https://npmjs.org/package/gl-util/)
 
 
-### `program(gl, vertSource, fragSource)`, `program(gl, program?)`
+### `program(gl, vertSource, fragSource)`
 
-Create program from vertex and fragment sources, make it active. Returns _WebGLProgram_ instance. Can be _WebGLProgram_ instance passed to make active program. By default just returns current program.
+Create program from vertex and fragment sources, make it active. Returns _WebGLProgram_ instance.
 
-### `uniform(gl, name, data?)`, `uniform(gl, {name: data, ...})`
+### `program(gl, program?)`
 
-Set uniform[s] for the webgl context, returns object with uniform parameters: `{name, location, data, type}`.
+Can be _WebGLProgram_ instance passed to make active program. By default just returns current program.
 
-### `texture(gl, name, data|parameters?)`, `texture(gl, {name: data|parameters, ...})`
+### `uniform(gl, name, data?)`
+### `uniform(gl, {name: data, ...})`
 
-Set texture[s] data or parameters:
+Get/set uniform or multiple uniforms for webgl context. Returns object with uniform parameters: `{name, location, data, type}`.
 
-| Name | Default | Meaning |
-|---|---|---|
-| `data` | [0, 1, 0, 1] | |
-| `index` | 1 | |
-| `minFilter` | gl.LINEAR | |
-| `magFilter` | gl.NEAREST | |
-| `filter` | gl.LINEAR | |
-| `wrapS` | gl.CLAMP_TO_EDGE | |
-| `wrapT` | gl.MIRRORED_REPEAT | |
-| `wrap` | gl.MIRRORED_REPEAT | |
-| `width` | 1 | |
-| `height` | 1 | |
-| `format` | gl.RGBA | |
-| `type` | gl.FLOAT or gl.UNSIGNED_BYTE | |
+### `texture(gl, name, data|parameters?)`
+### `texture(gl, {name: data|parameters, ...})`
 
-Returns full texture properties `{}`.
+Set data to texture, or set texture parameters:
 
-### `attribute(gl, name, data|parameters?)`, `attribute(gl, {name: data|parameters, ...})`
+| Name | Meaning |
+|---|---|
+| `data` | Data passed to texture. |
+| `index` | Spot number, if undefined - calculated automatically. |
+| `filter` | Sets texture scaling for both min and mag. Can be defined as two separate properties `minFilter` and `magFilter`. By default `gl.LINEAR`. |
+| `wrap` | Defines texture tiling vertically and horizontally. Can be defined precisely as `wrapS` and `wrapT`. By default `gl.MIRRORED_REPEAT`. |
+| `width` | In pixels |
+| `height` | In pixels |
+| `format` | By default `gl.RGBA` |
+| `type` | `gl.FLOAT` or `gl.UNSIGNED_BYTE` |
 
-Set data or parameters for attribute[s]:
+Returns object with texture properties `{data, index, minFilter, magFilter, wrapS, wrapT, width, height, format, type}`.
+
+### `attribute(gl, name, data|parameters?)`
+### `attribute(gl, {name: data|parameters, ...})`
+
+Set data for attribute or multiple attributes. Also can be passed attribute parameters:
 
 | Name | Default | Meaning |
 |---|---|---|
@@ -51,7 +54,7 @@ Set data or parameters for attribute[s]:
 | `target` | `gl.ARRAY_BUFFER` | |
 | `buffer` | `null` | WebGLBuffer to use for attribute |
 
-Returns created attribute properties `{data, size, stride, offset, usage, type, normalized, index, target, buffer}`
+Returns attribute properties `{data, size, stride, offset, usage, type, normalized, index, target, buffer}`
 
 
 
