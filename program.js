@@ -6,6 +6,9 @@ module.exports = setProgram;
 function setProgram (gl, vSrc, fSrc) {
 	if (!gl) throw Error('WebGL context is not provided')
 
+	//TODO: delete program by passing null
+	//TODO: keep track of used programs to avoid this request below, think how
+
 	//if just getProgram
 	if (!vSrc && !fSrc) {
 		return gl.getParameter(gl.CURRENT_PROGRAM);
