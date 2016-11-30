@@ -59,6 +59,6 @@ Returns attribute properties `{data, size, stride, offset, usage, type, normaliz
 
 There are [regl](https://github.com/regl-project/regl), [stack.gl](https://github.com/stackgl/) and other assorted libs, so why bother?
 
-Because their APIs are difficult to remember, same as vanilla webgl. Also they supersede native API, so that if one would like to debug vanilla webgl for a moment it would be utterly impossible. Also they tend to be relatively massive.
+Because I have hard time remembering their API or vanilla webgl. Also they supersede webgl methods, so that if one would like to debug pure webgl for a moment it would be utterly impossible. Also they tend to be relatively massive.
 
-_gl-util_ is like the functions created in any webgl tutorial. It is tiny, handy and familiar, so...
+_gl-util_ is like functions from any webgl tutorial. Tiny, handy and already familiar, so.
