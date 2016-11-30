@@ -5,18 +5,15 @@ Set of practical functions for webgl.
 [![npm install gl-util](https://nodei.co/npm/gl-util.png?mini=true)](https://npmjs.org/package/gl-util/)
 
 
-### `program(gl, vertSource, fragSource)`
-### `program(gl, program?)`
+### `program(gl, vertSource, fragSource)`, `program(gl, program?)`
 
 Create program from vertex and fragment sources, make it active. Returns _WebGLProgram_ instance. Can be _WebGLProgram_ instance passed to make active program. By default just returns current program.
 
-### `uniform(gl, name, data?)`
-### `uniform(gl, {name: data, ...})`
+### `uniform(gl, name, data?)`, `uniform(gl, {name: data, ...})`
 
 Set uniform[s] for the webgl context, returns object with uniform parameters: `{name, location, data, type}`.
 
-### `texture(gl, name, data|parameters?)`
-### `texture(gl, {name: data|parameters, ...})`
+### `texture(gl, name, data|parameters?)`, `texture(gl, {name: data|parameters, ...})`
 
 Set texture[s] data or parameters:
 
@@ -37,8 +34,7 @@ Set texture[s] data or parameters:
 
 Returns full texture properties `{}`.
 
-### `attribute(gl, name, data|parameters?)`
-### `attribute(gl, {name: data|parameters, ...})`
+### `attribute(gl, name, data|parameters?)`, `attribute(gl, {name: data|parameters, ...})`
 
 Set data or parameters for attribute[s]:
 
