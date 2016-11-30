@@ -1,7 +1,6 @@
 'use strict'
 
 const isPlainObject = require('is-plain-obj');
-const isInt = require('number-is-integer');
 const extend = require('object-assign');
 
 
@@ -35,13 +34,13 @@ module.exports = function setAttribute (gl, name, options) {
 		if (options && attribute.data && !isPlainObject(options) && options.length <= attribute.data.length) {
 			gl.bindBuffer(attribute.target, attribute.buffer);
 			if (attribute.target === gl.ELEMENT_ARRAY_BUFFER) {
-				attribute.data = new Uint16Array(opts[name]);
+				attribute.data = new Uint16Array(options);
 			}
 			else if (attribute.type === gl.FLOAT) {
-				attribute.data = new Float32Array(opts[name]);
+				attribute.data = new Float32Array(options);
 			}
 			else if (attribute.type === gl.UNSIGNED_BYTE) {
-				attribute.data = new Uint8Array(opts[name]);
+				attribute.data = new Uint8Array(options);
 			}
 			gl.bufferSubData(attribute.target, 0, attribute.data);
 		}
