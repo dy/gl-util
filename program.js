@@ -1,7 +1,5 @@
 'use strict'
 
-let programsCache = setProgram.programsCache = new WeakMap();
-
 module.exports = setProgram;
 
 
