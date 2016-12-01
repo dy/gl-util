@@ -28,11 +28,11 @@ Set texture[s] data or parameters:
 | `wrap` | Defines texture tiling vertically and horizontally. Can be defined precisely as `wrapS` and `wrapT`. By default `gl.MIRRORED_REPEAT`. |
 | `width` | In pixels |
 | `height` | In pixels |
-| `format` | By default `gl.RGBA` |
+| `format` | `gl.ALPHA`, `gl.RGB`, `gl.RGBA` (default), `gl.LUMINANCE`, `gl.LUMINANCE_ALPHA`, `gl.DEPTH_COMPONENT`, `gl.DEPTH_STENCIL`, [etc](https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/texImage2D) |
 | `type` | `gl.UNSIGNED_BYTE`, can be `gl.FLOAT` with proper extension enabled |
 | `level` | `0`, mipmap level. |
 
-Returns object with texture properties `{data, index, location, minFilter, magFilter, wrapS, wrapT, width, height, format, type}`.
+Returns object with texture properties `{data, index, location, minFilter, magFilter, wrapS, wrapT, width, height, format, type, texture}`.
 
 ### `attribute(gl, name?, data|parameters?, program?)`
 ### `attribute(gl, {name: data|parameters, ...}, program?)`
