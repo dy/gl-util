@@ -47,7 +47,7 @@ function setUniform (gl, name, options, program) {
 			if (info.type === gl.SAMPLER_2D || info.type === gl.SAMPLER_CUBE) {
 			}
 			else {
-				uniforms[name] = {name: info.name, type: info.type, data: null}
+				uniforms[info.name] = {name: info.name, type: info.type, data: null}
 			}
 		}
 

@@ -44,7 +44,7 @@ function setTexture (gl, name, options, program) {
 			let info = gl.getActiveUniform(program, i);
 			if (!info) continue;
 			if (info.type === gl.SAMPLER_2D || info.type === gl.SAMPLER_CUBE) {
-				textures[name] = {name: info.name}
+				textures[info.name] = {name: info.name}
 			}
 		}
 

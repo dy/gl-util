@@ -1,7 +1,6 @@
 const gl = require('webgl-context')()
 const util = require('./')
 
-
 document.body.appendChild(gl.canvas);
 
 let p1 = util.program(gl, `
