@@ -25,7 +25,7 @@ Set texture[s] data or parameters:
 | `data` | Data passed to texture. Can be array, typed array, image, canvas or string denoting the URL of image to load. |
 | `index` | Texture unit number, if undefined - calculated automatically. |
 | `filter` | Sets texture scaling for both min and mag. Can be defined as two separate properties `minFilter` and `magFilter`. By default `gl.LINEAR`. |
-| `wrap` | Defines texture tiling vertically and horizontally. Can be defined precisely as `wrapS` and `wrapT`. By default `gl.MIRRORED_REPEAT`. |
+| `wrap` | Defines texture tiling vertically and horizontally. Can be defined precisely as `wrapS` and `wrapT`. By default `gl.CLAMP_TO_EDGE`, can be `gl.MIRRORED_REPEAT` or `gl.`. |
 | `width` | In pixels |
 | `height` | In pixels |
 | `format` | `gl.ALPHA`, `gl.RGB`, `gl.RGBA` (default), `gl.LUMINANCE`, `gl.LUMINANCE_ALPHA`, `gl.DEPTH_COMPONENT`, `gl.DEPTH_STENCIL`, [etc](https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/texImage2D) |

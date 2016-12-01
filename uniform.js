@@ -115,7 +115,7 @@ function setUniform (gl, name, options, program) {
 	}
 
 	//put data to shader
-	if (uniform.location && uniform.data) {
+	if (uniform.location && uniform.data != null) {
 		switch (uniform.type) {
 			case gl.FLOAT_VEC4:
 			case gl.FLOAT_MAT2:
@@ -137,10 +137,10 @@ function setUniform (gl, name, options, program) {
 				gl.uniform2iv(uniform.location, uniform.data);
 				break;
 			case gl.FLOAT:
-				gl.uniform2f(uniform.location, uniform.data);
+				gl.uniform1f(uniform.location, uniform.data);
 				break;
 			case gl.INT:
-				gl.uniform2i(uniform.location, uniform.data);
+				gl.uniform1i(uniform.location, uniform.data);
 				break;
 		}
 	}

@@ -53,6 +53,7 @@ let p3 = util.program(gl, `
 
 	uniform sampler2D color;
 	uniform vec4 viewport;
+	uniform float x;
 
 	void main () {
 		vec2 coord = (gl_FragCoord.xy - viewport.xy) / viewport.zw;
@@ -74,6 +75,7 @@ setTimeout(() => {
 
 	setTimeout(() => {
 		util.program(gl, p3);
+		util.uniform(gl, 'x', 1);
 		util.attribute(gl, 'position', {data: [0,0,1,0,0,1]});
 		util.texture(gl, 'color', './texture.gif');
 		util.uniform(gl, 'viewport', [0,0,gl.drawingBufferWidth, gl.drawingBufferHeight]);
