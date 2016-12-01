@@ -143,13 +143,13 @@ function setTexture (gl, name, options, program) {
 	//handle raw data case
 	if (data == null || Array.isArray(data) || ArrayBuffer.isView(data)) {
 		if (options && options.shape) {
-			texture.width = options.shape[0];
-			texture.height = options.shape[1];
+			if (texture.width == null) texture.width = options.shape[0];
+			if (texture.height == null) texture.height = options.shape[1];
 		}
 		else {
 			let len = data && data.length || 1;
-			texture.width = options.width || data && data.width || (texture.format === gl.ALPHA ? len : Math.max(len / 4, 1));
-			texture.height = options.height || (data && data.height) || 1;
+			if (texture.width == null) texture.width = options.width || data && data.width || (texture.format === gl.ALPHA ? len : Math.max(len / 4, 1));
+			if (texture.height == null) texture.height = options.height || (data && data.height) || 1;
 		}
 		texture.data = data == null ? null : texture.type === gl.FLOAT ? new Float32Array(data) : texture.type === gl.UNSIGNED_SHORT ? new Uint16Array(data) : new Uint8Array(data);
 
