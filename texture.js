@@ -29,7 +29,7 @@ function setTexture (gl, name, options, program) {
 		return result;
 	}
 
-	let textures = texturesCache.has(program) ? texturesCache.get(program) : texturesCache.set(program, {}).get(program);
+	let textures = texturesCache.has(gl) ? texturesCache.get(gl) : texturesCache.set(gl, {}).get(gl);
 
 	//return all textures if no name provided
 	if (!name) return textures;
@@ -54,8 +54,11 @@ function setTexture (gl, name, options, program) {
 	}
 
 	//detect location
-	if (texture.location == null) {
-		texture.location = gl.getUniformLocation(program, name);
+	if (texture.locations == null) {
+		texture.locations = new WeakMap();
+	}
+	if (!texture.locations.has(program)) {
+		texture.locations.set(program, gl.getUniformLocation(program, name))
 	}
 
 	//if no options passed - just return known texture info
@@ -69,7 +72,7 @@ function setTexture (gl, name, options, program) {
 		texture.index = options.index != null ? options.index : textureCount++;
 		textureCount = Math.max(textureCount, texture.index);
 		texturesIdx.set(program, textureCount);
-		texture.location && gl.uniform1i(texture.location, texture.index);
+		gl.uniform1i(texture.locations.get(program), texture.index);
 	}
 
 	if (!texture.texture) {
