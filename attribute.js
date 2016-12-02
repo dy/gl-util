@@ -13,8 +13,7 @@ module.exports = setAttribute;
 function setAttribute (gl, name, options, program) {
 	if (!gl) throw Error('WebGL context is not provided');
 
-	if (!program) program = getProgram(gl);
-	else getProgram(gl, program);
+	program = getProgram(gl, program);
 
 	if (!program) throw Error('Context has no active program');
 
@@ -41,7 +40,7 @@ function setAttribute (gl, name, options, program) {
 	//if attribute exists and ony the data passed - just update buffer data
 	if (attribute) {
 		if (options && attribute.data && !isPlainObject(options) && options.length <= attribute.data.length) {
-			gl.bindBuffer(attribute.target, attribute.buffer);
+
 			if (attribute.target === gl.ELEMENT_ARRAY_BUFFER) {
 				attribute.data = new Uint16Array(options);
 			}
@@ -51,7 +50,15 @@ function setAttribute (gl, name, options, program) {
 			else if (attribute.type === gl.UNSIGNED_BYTE) {
 				attribute.data = new Uint8Array(options);
 			}
+
+			gl.bindBuffer(attribute.target, attribute.buffer);
 			gl.bufferSubData(attribute.target, 0, attribute.data);
+
+			//FIXME: sort out why do we need to set pointer every program switch
+			// gl.enableVertexAttribArray(attribute.index);
+			gl.vertexAttribPointer(attribute.index, attribute.size, attribute.type, attribute.normalized, attribute.stride, attribute.offset);
+			// gl.bindAttribLocation(program, attribute.index, attribute.name);
+
 			return attribute;
 		}
 	}
@@ -172,6 +179,7 @@ function setAttribute (gl, name, options, program) {
 
 	gl.bindBuffer(attribute.target, attribute.buffer);
 	gl.bufferData(attribute.target, attribute.data, attribute.usage);
+
 	gl.enableVertexAttribArray(attribute.index);
 	gl.vertexAttribPointer(attribute.index, attribute.size, attribute.type, attribute.normalized, attribute.stride, attribute.offset);
 	gl.bindAttribLocation(program, attribute.index, attribute.name);
