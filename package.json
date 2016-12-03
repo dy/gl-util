@@ -1,6 +1,6 @@
 {
   "name": "gl-util",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Set of practical webgl utils",
   "main": "index.js",
   "scripts": {
