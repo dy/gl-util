@@ -20,7 +20,7 @@ function setUniform (gl, name, options, program) {
 		program = options;
 		options = null;
 	}
-	else {
+	else if (!program) {
 		program = getProgram(gl, program);
 	}
 
