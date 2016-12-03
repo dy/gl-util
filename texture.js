@@ -4,8 +4,10 @@ const isBrowser = require('is-browser')
 const isPlainObject = require('is-plain-obj')
 const getProgram = require('./program')
 
-let texturesCache = setTexture.cache = new WeakMap();
-let texturesIdx = new WeakMap();
+const _WeakMap = require('is-firefox') ? Map : WeakMap;
+
+let texturesCache = setTexture.cache = new _WeakMap();
+let texturesIdx = new _WeakMap();
 
 
 module.exports = setTexture;
@@ -57,7 +59,7 @@ function setTexture (gl, name, options, program) {
 
 	//detect location
 	if (texture.locations == null) {
-		texture.locations = new WeakMap();
+		texture.locations = new _WeakMap();
 	}
 	if (!texture.locations.has(program)) {
 		texture.locations.set(program, gl.getUniformLocation(program, name))

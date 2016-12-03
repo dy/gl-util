@@ -7,7 +7,9 @@ const isInt = require('number-is-integer');
 const extend = require('object-assign');
 const getProgram = require('./program')
 
-let uniformsCache = setUniform.cache = new WeakMap();
+const _WeakMap = require('is-firefox') ? Map : WeakMap;
+
+let uniformsCache = setUniform.cache = new _WeakMap();
 
 module.exports = setUniform;
 
