@@ -16,8 +16,13 @@ module.exports = setTexture;
 function setTexture (gl, name, options, program) {
 	if (!gl) throw Error('WebGL context is not provided');
 
-	if (!program) program = getProgram(gl);
-	else getProgram(gl, program);
+	if (options instanceof WebGLProgram) {
+		program = options;
+		options = null;
+	}
+	else {
+		program = getProgram(gl, program);
+	}
 
 	if (!program) throw Error('Context has no active program');
 
