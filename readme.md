@@ -4,6 +4,20 @@ Set of practical functions for webgl.
 
 [![npm install gl-util](https://nodei.co/npm/gl-util.png?mini=true)](https://npmjs.org/package/gl-util/)
 
+### `context(options)`
+
+Get context based off options. Basically an extension of [webgl-context](https://github.com/mattdesl/webgl-context) enabling `float` param and alpha blending function, as well as fixing defaults. Possible options:
+
+| Name | Default | Meaning |
+|---|---|---|
+| `antialias` | `true` | Enable antialiasing. |
+| `alpha` | `true` | Whether canvas contains an alpha buffer, i. e. can be transparent. If `false`, an alpha blending function `gl.blendEquation( gl.FUNC_ADD ); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)` will be enabled. |
+| `premultipliedAlpha` | `true` | Page compositor will assume the drawing buffer contains colors with pre-multiplied alpha. |
+| `preserveDrawingBuffer` | `true` | Delegate clearing context to the author or clear every frame. |
+| `depth` | `false` | Enable depth buffer. |
+| `stencil` | `false` | Enable stencil buffer. |
+| `float` | `true` | |
+| `failIfMajorPerformanceCaveat` | `null` | Context will be created if the system performance is low. |
 
 ### `program(gl, program?)`
 ### `program(gl, vertSource, fragSource)`

@@ -1,7 +1,7 @@
-const gl = require('webgl-context')()
 const util = require('./')
 
-document.body.appendChild(gl.canvas);
+let gl = util.context({preserveDrawingBuffer: false})
+document.body.appendChild(gl.canvas)
 
 let p1 = util.program(gl, `
 	precision mediump float;
