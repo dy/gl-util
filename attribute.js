@@ -116,10 +116,10 @@ function setAttribute (gl, name, options, program) {
 						size = 16;
 						break;
 			}
-			attributes[name] = {name: info.name, type: type, size: size, data: null}
+			attributes[name] = {name: info.name, type: type, size: size, data: []}
 		}
 
-		if (!attributes[name]) attributes[name] = {name: name, data: null, type: null, size: null}
+		if (!attributes[name]) attributes[name] = {name: name, data: [], type: null, size: null}
 
 		attribute = attributes[name];
 	}

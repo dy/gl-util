@@ -1,7 +1,11 @@
 const util = require('./')
+const assert = require('assert')
 
 let gl = util.context({preserveDrawingBuffer: false})
 document.body.appendChild(gl.canvas)
+
+let attrs = gl.getContextAttributes();
+assert.equal(false, attrs.preserveDrawingBuffer);
 
 let p1 = util.program(gl, `
 	precision mediump float;

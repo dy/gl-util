@@ -21,7 +21,8 @@ function setContext (opts) {
 		premultipliedAlpha: true,
 		preserveDrawingBuffer: true,
 		depth: false,
-		stencil: false
+		stencil: false,
+		float: false
 	}, opts);
 
 	//create new context with default options
