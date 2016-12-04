@@ -33,6 +33,8 @@ util.uniform(gl, 'color', [1, .2, 0, 1.]);
 gl.drawArrays(gl.TRIANGLES, 0, 3);
 ```
 
+## API
+
 ### `context(options)`
 
 Get context based off options. Basically an extension of [webgl-context](https://github.com/mattdesl/webgl-context) enabling `float` param and alpha blending function, as well as fixing defaults. Possible options:
