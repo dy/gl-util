@@ -14,16 +14,16 @@ function setContext (opts) {
 	if (!canvas) canvas = document.createElement('canvas');
 
 	//provide defaults
-	if (opts.antialias == null) opts.antialias = true
-	if (opts.alpha == null) opts.alpha = true
-	if (opts.premultipliedAlpha == null) opts.premultipliedAlpha = true
-	if (opts.preserveDrawingBuffer == null) opts.preserveDrawingBuffer = true
-	if (opts.depth == null) opts.depth = false
-	if (opts.stencil == null) opts.stencil = false
-	if (opts.float == null) opts.float = false
 
 	//create new context with default options
-	let gl = glContext(opts);
+	let gl = glContext({
+		antialias: opts.antialias != null ? opts.antialias : true,
+		alpha: opts.alpha != null ? opts.alpha : true,
+		premultipliedAlpha: opts.premultipliedAlpha != null ? opts.premultipliedAlpha : true,
+		preserveDrawingBuffer: opts.preserveDrawingBuffer != null ? opts.preserveDrawingBuffer : true,
+		depth: opts.depth != null ? opts.depth : false,
+		stencil: opts.stencil != null ? opts.stencil : false
+	});
 
 	//enable extensions
 	if (opts.float) {
