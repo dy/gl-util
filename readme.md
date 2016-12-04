@@ -10,6 +10,9 @@ Get context based off options. Basically an extension of [webgl-context](https:/
 
 | Name | Default | Meaning |
 |---|---|---|
+| `canvas` | | An existing canvas element to re-use rather than creating a new one. |
+| `width` | | If specified, will set the canvas width. |
+| `height` | | If specified, will set the canvas height. |
 | `antialias` | `true` | Enable antialiasing. |
 | `alpha` | `true` | Whether canvas contains an alpha buffer, i. e. can be transparent. If `false`, an alpha blending function `gl.blendEquation( gl.FUNC_ADD ); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)` will be enabled. |
 | `premultipliedAlpha` | `true` | Page compositor will assume the drawing buffer contains colors with pre-multiplied alpha. |
@@ -17,17 +20,58 @@ Get context based off options. Basically an extension of [webgl-context](https:/
 | `depth` | `false` | Enable depth buffer. |
 | `stencil` | `false` | Enable stencil buffer. |
 | `float` | `true` | Enable `OES_texture_float`/`OES_texture_float_linear` or `OES_texture_half_float`/`OES_texture_half_float_linear` extensions. |
-| `failIfMajorPerformanceCaveat` | `null` | Context will be created if the system performance is low. |
+| `failIfMajorPerformanceCaveat` | | Context will be created if the system performance is low. |
+
+```js
+const getContext = require('gl-util/context')
+
+let canvas = document.createElement('canvas')
+
+let gl = getContext('webgl', {
+	canvas: canvas,
+	antialias: true
+})
+```
 
 ### `program(gl, program?)`
 ### `program(gl, vertSource, fragSource)`
 
 Get/set active program or create new program from vertex and fragment sources. The _WebGLProgram_ instance is returned.
 
+```js
+const createProgram = require('gl-util/program')
+
+let program = createProgram(gl, `
+	precision mediump float;
+
+	attribute vec2 position;
+
+	void main() {
+		gl_Position = vec4(position * 2. - 1., 0, 1);
+	}
+`, `
+	precision mediump float;
+
+	uniform sampler2D image;
+	uniform vec2 shape;
+	uniform float x;
+
+	void main () {
+		gl_FragColor = texture2D(image, gl_FragCoord.xy / shape);
+	}
+`)
+```
+
 ### `uniform(gl, name?, data?, program?)`
 ### `uniform(gl, {name: data, ...}, program?)`
 
 Get/set uniform or multiple uniforms. Returns object with uniform parameters: `{name, location, data, type}`. Uniforms are stored per-program instance, so to make sure right program is active before updating uniforms a `program` can be passed as the last argument.
+
+```js
+const uniform = require('gl-util/uniform')
+
+uniform(gl, 'color', [1, .2, 0, 1]);
+```
 
 ### `texture(gl, name?, data|parameters?, program?)`
 ### `texture(gl, {name: data|parameters, ...}, program?)`
@@ -48,6 +92,12 @@ Set texture[s] data or parameters:
 
 Returns object with texture properties `{data, index, location, minFilter, magFilter, wrapS, wrapT, width, height, format, type, texture}`.
 
+```js
+const texture = require('gl-util/texture')
+
+texture(gl, 'image', './picture.gif');
+```
+
 ### `attribute(gl, name?, data|parameters?, program?)`
 ### `attribute(gl, {name: data|parameters, ...}, program?)`
 
@@ -67,6 +117,12 @@ Set attribute[s] data or parameters:
 | `buffer` | `null` | WebGLBuffer to use for attribute |
 
 Returns attribute properties `{data, size, stride, offset, usage, type, normalized, index, target, buffer}`.
+
+```js
+const attribute = require('gl-util/attribute')
+
+attribute(gl, 'position', [0,0,1,0,0,1]);
+```
 
 ## Motivation
 
