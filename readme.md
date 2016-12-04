@@ -16,7 +16,7 @@ Get context based off options. Basically an extension of [webgl-context](https:/
 | `preserveDrawingBuffer` | `true` | Delegate clearing context to the author or clear every frame. |
 | `depth` | `false` | Enable depth buffer. |
 | `stencil` | `false` | Enable stencil buffer. |
-| `float` | `true` | |
+| `float` | `true` | Enable `OES_texture_float`/`OES_texture_float_linear` or `OES_texture_half_float`/`OES_texture_half_float_linear` extensions. |
 | `failIfMajorPerformanceCaveat` | `null` | Context will be created if the system performance is low. |
 
 ### `program(gl, program?)`
