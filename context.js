@@ -2,7 +2,6 @@
 'use strict'
 
 const glContext = require('webgl-context')
-const extend = require('object-assign')
 
 module.exports = setContext;
 
@@ -15,15 +14,13 @@ function setContext (opts) {
 	if (!canvas) canvas = document.createElement('canvas');
 
 	//provide defaults
-	opts = extend({
-		antialias: true,
-		alpha: true,
-		premultipliedAlpha: true,
-		preserveDrawingBuffer: true,
-		depth: false,
-		stencil: false,
-		float: false
-	}, opts);
+	if (opts.antialias == null) opts.antialias = true
+	if (opts.alpha == null) opts.alpha = true
+	if (opts.premultipliedAlpha == null) opts.premultipliedAlpha = true
+	if (opts.preserveDrawingBuffer == null) opts.preserveDrawingBuffer = true
+	if (opts.depth == null) opts.depth = false
+	if (opts.stencil == null) opts.stencil = false
+	if (opts.float == null) opts.float = false
 
 	//create new context with default options
 	let gl = glContext(opts);
