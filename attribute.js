@@ -116,7 +116,7 @@ function setAttribute (gl, name, options, program) {
 						size = 16;
 						break;
 			}
-			attributes[name] = {name: info.name, type: type, size: size, data: []}
+			attributes[info.name] = {name: info.name, type: type, size: size, data: []}
 		}
 
 		if (!attributes[name]) attributes[name] = {name: name, data: [], type: null, size: null}
