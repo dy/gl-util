@@ -22,7 +22,9 @@ function setContext (opts) {
 		premultipliedAlpha: opts.premultipliedAlpha != null ? opts.premultipliedAlpha : true,
 		preserveDrawingBuffer: opts.preserveDrawingBuffer != null ? opts.preserveDrawingBuffer : true,
 		depth: opts.depth != null ? opts.depth : false,
-		stencil: opts.stencil != null ? opts.stencil : false
+		stencil: opts.stencil != null ? opts.stencil : false,
+		width: opts.width,
+		height: opts.height
 	});
 
 	//enable extensions

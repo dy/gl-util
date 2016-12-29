@@ -53,7 +53,9 @@ function setTexture (gl, name, options, program) {
 			let info = gl.getActiveUniform(program, i);
 			if (!info) continue;
 			if (info.type === gl.SAMPLER_2D || info.type === gl.SAMPLER_CUBE) {
-				textures[info.name] = {name: info.name}
+				if (!textures[info.name]) {
+					textures[info.name] = {name: info.name}
+				}
 			}
 		}
 
@@ -71,7 +73,9 @@ function setTexture (gl, name, options, program) {
 	}
 
 	//if no options passed - just return known texture info
-	if (options == null) return texture;
+	if (options == null) {
+		return texture;
+	}
 
 	if (!isPlainObject(options)) options = {data: options};
 
@@ -157,9 +161,9 @@ function setTexture (gl, name, options, program) {
 		}
 		else {
 			let len = data && data.length || 1;
-			if (options.width) texture.width = options.width;
+			if (options.width != null) texture.width = options.width;
 			else if (texture.width == null) texture.width = data && data.width || (texture.format === gl.ALPHA ? len : Math.max(len / 4, 1));
-			if (options.height) texture.height = options.height;
+			if (options.height != null) texture.height = options.height;
 			else if (texture.height == null) texture.height = (data && data.height) || 1;
 		}
 		texture.data = data == null ? null : texture.type === gl.FLOAT ? new Float32Array(data) : texture.type === gl.UNSIGNED_SHORT ? new Uint16Array(data) : new Uint8Array(data);
