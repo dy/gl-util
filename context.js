@@ -10,13 +10,11 @@ function setContext (opts) {
 	else if (typeof opts === 'string') opts = {};
 	else if (opts.context) return opts.context;
 
-	let canvas = opts.canvas;
-	if (!canvas) canvas = document.createElement('canvas');
-
 	//provide defaults
 
 	//create new context with default options
 	let gl = glContext({
+		canvas: opts.canvas ? opts.canvas : document.createElement('canvas'),
 		antialias: opts.antialias != null ? opts.antialias : true,
 		alpha: opts.alpha != null ? opts.alpha : true,
 		premultipliedAlpha: opts.premultipliedAlpha != null ? opts.premultipliedAlpha : true,
