@@ -14,7 +14,7 @@ function setContext (opts) {
 
 	//create new context with default options
 	let gl = glContext({
-		canvas: opts.canvas ? opts.canvas : typeof document != 'undefined' ? document.createElement('canvas') : null,
+		canvas: opts.canvas ? opts.canvas : document.createElement('canvas'),
 		antialias: opts.antialias != null ? opts.antialias : true,
 		alpha: opts.alpha != null ? opts.alpha : true,
 		premultipliedAlpha: opts.premultipliedAlpha != null ? opts.premultipliedAlpha : true,
