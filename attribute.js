@@ -3,11 +3,10 @@
 const isPlainObject = require('is-plain-obj');
 const extend = require('object-assign');
 const getProgram = require('./program')
+const WeakMap = require('es6-weak-map');
 
-const _WeakMap = require('is-firefox') ? Map : WeakMap;
-
-let attributesCache = setAttribute.cache = new _WeakMap();
-let attributesIdx = new _WeakMap();
+let attributesCache = setAttribute.cache = new WeakMap();
+let attributesIdx = new WeakMap();
 
 module.exports = setAttribute;
 

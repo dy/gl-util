@@ -1,13 +1,15 @@
-const util = require('./')
+'use strict'
+
+const {program, attribute, uniform, context, texture} = require('./')
 const assert = require('assert')
 
-let gl = util.context({preserveDrawingBuffer: false})
+let gl = context({preserveDrawingBuffer: false})
 document.body.appendChild(gl.canvas)
 
 let attrs = gl.getContextAttributes();
 assert.equal(false, attrs.preserveDrawingBuffer);
 
-let p1 = util.program(gl, `
+let p1 = program(gl, `
 	precision mediump float;
 
 	attribute vec2 position;
@@ -25,7 +27,7 @@ let p1 = util.program(gl, `
 	}
 `);
 
-let p2 = util.program(gl, `
+let p2 = program(gl, `
 	precision mediump float;
 
 	attribute vec3 position;
@@ -43,7 +45,7 @@ let p2 = util.program(gl, `
 	}
 ` )
 
-let p3 = util.program(gl, `
+let p3 = program(gl, `
 	precision mediump float;
 
 	attribute vec2 position;
@@ -64,24 +66,24 @@ let p3 = util.program(gl, `
 	}
 `)
 
+program(gl, p1)
+attribute(gl, 'position', {data: [0,0,1,0,0,1]});
+uniform(gl, 'color', [1, .2, 0, 1.]);
 
-util.program(gl, p1);
-util.attribute(gl, 'position', {data: [0,0,1,0,0,1]});
-util.uniform(gl, 'color', [1, .2, 0, 1.]);
 gl.drawArrays(gl.TRIANGLES, 0, 3);
 
 setTimeout(() => {
-	util.program(gl, p2);
-	util.attribute(gl, 'position', {data: [0,0,0,.5,0,0,0,.5,0]});
-	util.uniform(gl, 'color', [.8, .9, 0])
+	program(gl, p2);
+	attribute(gl, 'position', {data: [0,0,0,.5,0,0,0,.5,0]});
+	uniform(gl, 'color', [.8, .9, 0])
 	gl.drawArrays(gl.TRIANGLES, 0, 3);
 
 	setTimeout(() => {
-		util.program(gl, p3);
-		util.uniform(gl, 'x', 1);
-		util.attribute(gl, 'position', {data: [0,0,1,0,0,1]});
-		util.texture(gl, 'color', './texture.gif');
-		util.uniform(gl, 'viewport', [0,0,gl.drawingBufferWidth, gl.drawingBufferHeight]);
+		program(gl, p3);
+		uniform(gl, 'x', 1);
+		attribute(gl, 'position', {data: [0,0,1,0,0,1]});
+		texture(gl, 'color', './texture.gif');
+		uniform(gl, 'viewport', [0,0,gl.drawingBufferWidth, gl.drawingBufferHeight]);
 		setTimeout(() => {
 			gl.drawArrays(gl.TRIANGLES, 0, 3);
 		}, 100)

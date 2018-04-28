@@ -5,12 +5,11 @@ Set of practical functions for webgl.
 [![npm install gl-util](https://nodei.co/npm/gl-util.png?mini=true)](https://npmjs.org/package/gl-util/)
 
 ```js
-const util = require('gl-util');
+const u = require('gl-util');
 
-let gl = util.context({preserveDrawingBuffer: false})
-document.body.appendChild(gl.canvas)
+let gl = u.context({canvas, preserveDrawingBuffer: false})
 
-util.program(gl, `
+let prog = u.program(gl, `
 	precision mediump float;
 
 	attribute vec2 position;
@@ -27,8 +26,8 @@ util.program(gl, `
 		gl_FragColor = color;
 	}
 `);
-util.attribute(gl, 'position', [0,0, 1,0, 0,1]);
-util.uniform(gl, 'color', [1, .2, 0, 1.]);
+u.attribute(prog, 'position', [0,0, 1,0, 0,1]);
+u.uniform(prog, 'color', [1, .2, 0, 1.]);
 
 gl.drawArrays(gl.TRIANGLES, 0, 3);
 ```
@@ -64,15 +63,15 @@ let gl = getContext('webgl', {
 })
 ```
 
-### `program(gl, program?)`
-### `program(gl, vertSource, fragSource)`
+### `prog = program(gl, prog|vert?, frag?)`
 
-Get/set active program or create new program from vertex and fragment sources. The _WebGLProgram_ instance is returned.
+Set active program or create a new program from vertex and fragment sources. Programs are cached for the context by source. The _WebGLProgram_ instance is returned.
 
 ```js
-const createProgram = require('gl-util/program')
+const program = require('gl-util/program')
 
-let program = createProgram(gl, `
+// create and set program
+let prog = program(gl, `
 	precision mediump float;
 
 	attribute vec2 position;
@@ -91,12 +90,14 @@ let program = createProgram(gl, `
 		gl_FragColor = texture2D(image, gl_FragCoord.xy / shape);
 	}
 `)
+
+// set active program
+program(gl, prog)
 ```
 
-### `uniform(gl, name?, data?, program?)`
-### `uniform(gl, {name: data, ...}, program?)`
+### `uni = uniform(gl|program, {name: data, ...} | name?, data?)`
 
-Get/set uniform or multiple uniforms. Returns object with uniform parameters: `{name, location, data, type}`. Uniforms are stored per-program instance, so to make sure right program is active before updating uniforms a `program` can be passed as the last argument.
+Get/set uniform or multiple uniforms. Returns an object with uniform parameters: `{name, location, data, type}`. Uniforms are stored per-program instance.
 
 ```js
 const uniform = require('gl-util/uniform')
@@ -104,8 +105,7 @@ const uniform = require('gl-util/uniform')
 uniform(gl, 'color', [1, .2, 0, 1]);
 ```
 
-### `texture(gl, name?, data|parameters?, program?)`
-### `texture(gl, {name: data|parameters, ...}, program?)`
+### `txt = texture(gl, {name: params, ...} | name?, params?)`
 
 Set texture[s] data or parameters:
 
@@ -126,17 +126,16 @@ Returns object with texture properties `{data, index, location, minFilter, magFi
 ```js
 const texture = require('gl-util/texture')
 
-texture(gl, 'image', './picture.gif');
+let {width, height} = texture(gl, 'image', './picture.gif');
 ```
 
-### `attribute(gl, name?, data|parameters?, program?)`
-### `attribute(gl, {name: data|parameters, ...}, program?)`
+### `attr = attribute(gl, {name: params, ...} | name?, params?)`
 
 Set attribute[s] data or parameters:
 
 | Name | Default | Meaning |
 |---|---|---|
-| `data` | `null` | Data for the attribute, can be array or typed array |
+| `data` | `null` | Data for the attribute, can be array, typed array or array buffer |
 | `size` | `2` | Number of data items per vertex |
 | `stride` | `0` | Offset in bytes between the beginning of consecutive vertex attributes. |
 | `offset` | `0` | Offset in bytes of the first component in the data. Must be a multiple of type. |
@@ -157,8 +156,17 @@ attribute(gl, 'position', [0,0,1,0,0,1]);
 
 ## Motivation
 
-There are [regl](https://github.com/regl-project/regl) and other [stack.gl](https://github.com/stackgl/) components like _gl-texture_, _gl-shader_ etc, so why bother?
+There are [regl](https://github.com/regl-project/regl), [stack.gl](https://github.com/stackgl/) and many other WegGL components or frameworks, so why gl-util?
 
-Because their API may give hard time remembering, same as pure webgl methods. Also _gl-utils_ do not supersede webgl API, so that allows for debugging pure webgl for a moment if one need to. Also if one need minimalistic webgl setup it may be better to opt for a couple of functions over relatively massive stack.gl components.
+* WebGL frameworks API is usually difficult to remember, not much better than pure WebGL, although _regl_ does a great job. _gl-util_ is like functions from any WebGL tutorial - tiny, handy and already familiar.
+* _gl-util_ does not supersede WebGL API - that allows for debugging pure WebGL at any moment.
+* _gl-util_ is tiny - if one needs minimalistic WebGL setup it may be better to opt for a couple of functions than massive stack.gl components or regl (70kb+).
+* regl API may be cumbersome for organizing components
 
-_gl-util_ is like functions from any webgl tutorial. Tiny, handy and already familiar, so.
+
+## License
+
+(c) 2018 Dmitry Yv. MIT License
+
+
+so
