@@ -62,9 +62,8 @@ module.exports = function setContext (o) {
 		h = o.height || (bounds.bottom - bounds.top)
 	}
 	else {
-		var sb = scrollbar()
-		w = window.innerWidth - sb[0]
-		h = window.innerHeight - sb[1]
+		w = window.innerWidth
+		h = window.innerHeight
 	}
     o.canvas.width = o.pixelRatio * w
     o.canvas.height = o.pixelRatio * h
@@ -103,24 +102,4 @@ function isElement (e) {
 function isContext (e) {
 	return typeof e.drawArrays === 'function' ||
 		typeof e.drawElements === 'function'
-}
-
-function scrollbar () {
-	const div = document.createElement('div')
-
-	div.style.width = '100px'
-	div.style.height = '100px'
-	div.style.overflow = 'scroll'
-	div.style.position = 'absolute'
-	div.style.top = '-9999px'
-	div.style.left = '-9999px'
-
-	document.body.appendChild(div)
-
-	const scrollbarWidth = div.offsetWidth - div.clientWidth
-	const scrollbarHeight = div.offsetHeight - div.clientHeight
-
-	document.body.removeChild(div)
-
-	return [scrollbarWidth, scrollbarHeight]
 }

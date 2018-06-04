@@ -3,10 +3,11 @@
 const {program, attribute, uniform, context, texture} = require('./')
 const assert = require('assert')
 
+document.body.style.margin = 0
+
 let gl = context({
 	attributes: {preserveDrawingBuffer: false}
 })
-document.body.appendChild(gl.canvas)
 
 let attrs = gl.getContextAttributes();
 assert.equal(false, attrs.preserveDrawingBuffer);
