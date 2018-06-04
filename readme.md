@@ -7,7 +7,7 @@ Set of practical functions for webgl.
 ```js
 const u = require('gl-util');
 
-let gl = u.context({canvas, preserveDrawingBuffer: false})
+let gl = u.context(canvas)
 
 let prog = u.program(gl, `
 	precision mediump float;
@@ -34,32 +34,27 @@ gl.drawArrays(gl.TRIANGLES, 0, 3);
 
 ## API
 
-### `context(options)`
+### `context(container|canvas|options?)`
 
-Get context based off options. Basically an extension of [webgl-context](https://github.com/mattdesl/webgl-context) enabling `float` param and alpha blending function, as well as fixing defaults. Possible options:
+Create and/or return WebGL context for the canvas element, possibly based on options. If `container` is not defined, `document.body` is used.
 
-| Name | Default | Meaning |
-|---|---|---|
-| `canvas` | | An existing canvas element to re-use rather than creating a new one. |
-| `width` | | If specified, will set the canvas width. |
-| `height` | | If specified, will set the canvas height. |
-| `antialias` | `true` | Enable antialiasing. |
-| `alpha` | `true` | Whether canvas contains an alpha buffer, i. e. can be transparent. If `false`, an alpha blending function `gl.blendEquation( gl.FUNC_ADD ); gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)` will be enabled. |
-| `premultipliedAlpha` | `true` | Page compositor will assume the drawing buffer contains colors with pre-multiplied alpha. |
-| `preserveDrawingBuffer` | `true` | Delegate clearing context to the author or clear every frame. |
-| `depth` | `false` | Enable depth buffer. |
-| `stencil` | `false` | Enable stencil buffer. |
-| `float` | `true` | Enable `OES_texture_float`/`OES_texture_float_linear` or `OES_texture_half_float`/`OES_texture_half_float_linear` extensions. |
-| `failIfMajorPerformanceCaveat` | | Context will be created if the system performance is low. |
+| Option | Meaning |
+|---|---|
+| `canvas` | A canvas element to obtain context for. |
+| `container` | An element to create canvas in and return context for it. |
+| `width` | If specified, will set the canvas width. |
+| `height` | If specified, will set the canvas height. |
+| `pixelRatio` | Multiplier for `width` and `height`. |
+| `attributes` | Attributes object. Available attributes: `alpha`, `depth`, `stencil`, `antialias`, `premultipliedAlpha`, `preserveDrawingBuffer` and `failIfMajorPerformanceCaveat`. |
 
 ```js
 const getContext = require('gl-util/context')
 
-let canvas = document.createElement('canvas')
-
-let gl = getContext('webgl', {
-	canvas: canvas,
-	antialias: true
+// create canvas element in the document.body and retrieve context for it
+let gl = getContext({
+	attributes: {
+		antialias: true
+	}
 })
 ```
 
@@ -95,7 +90,7 @@ let prog = program(gl, `
 program(gl, prog)
 ```
 
-### `uni = uniform(gl|program, {name: data, ...} | name?, data?)`
+### `unif = uniform(gl|program, {name: data, ...} | name?, data?)`
 
 Get/set uniform or multiple uniforms. Returns an object with uniform parameters: `{name, location, data, type}`. Uniforms are stored per-program instance.
 
@@ -153,6 +148,10 @@ const attribute = require('gl-util/attribute')
 
 attribute(gl, 'position', [0,0,1,0,0,1]);
 ```
+
+### `clear(gl, optsion?)`
+
+Clear the viewport.
 
 ## Motivation
 
