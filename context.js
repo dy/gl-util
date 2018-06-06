@@ -4,6 +4,8 @@
 var pick = require('pick-by-alias')
 
 module.exports = function setContext (o) {
+	if (!o) o = {}
+
 	// HTMLCanvasElement
 	if (isCanvas(o)) {
 		o = {container: o}
