@@ -55,18 +55,15 @@ module.exports = function setContext (o) {
 	}
 
 	// resize canvas
-	var w, h
 	if (o.container != document.body) {
 		var bounds = o.container.getBoundingClientRect()
-		w = o.width || (bounds.right - bounds.left)
-		h = o.height || (bounds.bottom - bounds.top)
+		o.canvas.width = o.width || (bounds.right - bounds.left)
+		o.canvas.height = o.height || (bounds.bottom - bounds.top)
 	}
 	else {
-		w = window.innerWidth
-		h = window.innerHeight
+		if (!document.body.style.width) o.canvas.width = o.pixelRatio * window.innerWidth
+		if (!document.body.style.height) o.canvas.height = o.pixelRatio * window.innerHeight
 	}
-    o.canvas.width = o.pixelRatio * w
-    o.canvas.height = o.pixelRatio * h
 
 	// make sure there is context
 	if (!o.gl) {
