@@ -32,9 +32,11 @@ module.exports = function setContext (o) {
 
 	// make sure there is container and canvas
 	if (o.gl) {
-		if (!o.container) o.container = o.gl.canvas
+		return o.gl
 	}
-
+	if (o.canvas) {
+		o.container = o.canvas.parentNode
+	}
 	if (o.container) {
 		if (typeof o.container === 'string') {
 			let c = document.querySelector(o.container)
@@ -45,26 +47,18 @@ module.exports = function setContext (o) {
 			o.canvas = o.container
 			o.container = o.canvas.parentNode
 		}
-		else {
+		else if (!o.canvas) {
 			o.canvas = document.createElement('canvas')
 			o.container.appendChild(o.canvas)
+			resize(o)
 		}
 	}
-	else {
+	// blank new canvas
+	else if (!o.canvas) {
 		o.container = document.body || document.documentElement
 		o.canvas = document.createElement('canvas')
 		o.container.appendChild(o.canvas)
-	}
-
-	// resize canvas
-	if (o.container != document.body) {
-		var bounds = o.container.getBoundingClientRect()
-		o.canvas.width = o.width || (bounds.right - bounds.left)
-		o.canvas.height = o.height || (bounds.bottom - bounds.top)
-	}
-	else {
-		if (!document.body.style.width) o.canvas.width = o.pixelRatio * window.innerWidth
-		if (!document.body.style.height) o.canvas.height = o.pixelRatio * window.innerHeight
+		resize(o)
 	}
 
 	// make sure there is context
@@ -85,6 +79,19 @@ module.exports = function setContext (o) {
 }
 
 
+function resize (o) {
+	if (o.container) {
+		if (o.container != document.body) {
+			var bounds = o.container.getBoundingClientRect()
+			o.canvas.width = o.width || (bounds.right - bounds.left)
+			o.canvas.height = o.height || (bounds.bottom - bounds.top)
+		}
+		else {
+			if (!document.body.style.width) o.canvas.width = o.pixelRatio * window.innerWidth
+			if (!document.body.style.height) o.canvas.height = o.pixelRatio * window.innerHeight
+		}
+	}
+}
 
 function isCanvas (e) {
 	return typeof e.getContext === 'function'

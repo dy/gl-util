@@ -1,6 +1,6 @@
 'use strict'
 
-const {program, attribute, uniform, context, texture} = require('./')
+const {program, attribute, uniform, context, texture} = require('../')
 const assert = require('assert')
 
 document.body.style.margin = 0
