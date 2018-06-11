@@ -57,6 +57,9 @@ module.exports = function setContext (o) {
 	else if (!o.canvas) {
 		o.container = document.body || document.documentElement
 		o.canvas = document.createElement('canvas')
+		o.canvas.style.position = 'absolute'
+		o.canvas.style.top = 0
+		o.canvas.style.left = 0
 		o.container.appendChild(o.canvas)
 		resize(o)
 	}
@@ -81,14 +84,14 @@ module.exports = function setContext (o) {
 
 function resize (o) {
 	if (o.container) {
-		if (o.container != document.body) {
+		if (o.container == document.body) {
+			if (!document.body.style.width) o.canvas.width = o.width || (o.pixelRatio * window.innerWidth)
+			if (!document.body.style.height) o.canvas.height = o.height || (o.pixelRatio * window.innerHeight)
+		}
+		else {
 			var bounds = o.container.getBoundingClientRect()
 			o.canvas.width = o.width || (bounds.right - bounds.left)
 			o.canvas.height = o.height || (bounds.bottom - bounds.top)
-		}
-		else {
-			if (!document.body.style.width) o.canvas.width = o.pixelRatio * window.innerWidth
-			if (!document.body.style.height) o.canvas.height = o.pixelRatio * window.innerHeight
 		}
 	}
 }
