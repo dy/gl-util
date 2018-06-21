@@ -40,7 +40,7 @@ module.exports = function setContext (o) {
 	if (o.container) {
 		if (typeof o.container === 'string') {
 			var c = document.querySelector(o.container)
-			if (!o.container) throw Error(`Element '${o.container}' is not found`)
+			if (!o.container) throw Error('Element ' + o.container + ' is not found')
 			o.container = c
 		}
 		if (isCanvas(o.container)) {
