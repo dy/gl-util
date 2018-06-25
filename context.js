@@ -5,6 +5,7 @@ var pick = require('pick-by-alias')
 
 module.exports = function setContext (o) {
 	if (!o) o = {}
+	else if (typeof o === 'string') o = {container: o}
 
 	// HTMLCanvasElement
 	if (isCanvas(o)) {
@@ -40,7 +41,7 @@ module.exports = function setContext (o) {
 	if (o.container) {
 		if (typeof o.container === 'string') {
 			var c = document.querySelector(o.container)
-			if (!o.container) throw Error('Element ' + o.container + ' is not found')
+			if (!c) throw Error('Element ' + o.container + ' is not found')
 			o.container = c
 		}
 		if (isCanvas(o.container)) {

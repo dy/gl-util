@@ -10,3 +10,13 @@ t('context over context', t => {
 
 	t.end()
 })
+
+t('context container as string', t => {
+	let canvas = document.body.appendChild(document.createElement('canvas'))
+	canvas.id = 'canvas'
+	let gl = context('#canvas')
+
+	document.body.removeChild(canvas)
+
+	t.end()
+})
