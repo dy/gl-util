@@ -49,7 +49,7 @@ module.exports = function setContext (o) {
 			o.container = o.canvas.parentNode
 		}
 		else if (!o.canvas) {
-			o.canvas = document.createElement('canvas')
+			o.canvas = createCanvas()
 			o.container.appendChild(o.canvas)
 			resize(o)
 		}
@@ -57,10 +57,7 @@ module.exports = function setContext (o) {
 	// blank new canvas
 	else if (!o.canvas) {
 		o.container = document.body || document.documentElement
-		o.canvas = document.createElement('canvas')
-		o.canvas.style.position = 'absolute'
-		o.canvas.style.top = 0
-		o.canvas.style.left = 0
+		o.canvas = createCanvas()
 		o.container.appendChild(o.canvas)
 		resize(o)
 	}
@@ -112,4 +109,13 @@ function isElement (e) {
 function isContext (e) {
 	return typeof e.drawArrays === 'function' ||
 		typeof e.drawElements === 'function'
+}
+
+function createCanvas () {
+	let canvas = document.createElement('canvas')
+	canvas.style.position = 'absolute'
+	canvas.style.top = 0
+	canvas.style.left = 0
+
+	return canvas
 }
