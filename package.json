@@ -22,13 +22,13 @@
   },
   "homepage": "https://github.com/dy/gl-util#readme",
   "dependencies": {
-    "es6-weak-map": "^2.0.2",
     "is-browser": "^2.0.1",
     "is-firefox": "^1.0.3",
     "is-plain-obj": "^1.1.0",
     "number-is-integer": "^1.0.1",
     "object-assign": "^4.1.0",
-    "pick-by-alias": "^1.2.0"
+    "pick-by-alias": "^1.2.0",
+    "weak-map": "^1.0.5"
   },
   "devDependencies": {
     "tape": "^4.9.1"

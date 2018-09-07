@@ -2,12 +2,12 @@
 
 'use strict'
 
-const isPlainObject = require('is-plain-obj');
-const isInt = require('number-is-integer');
-const extend = require('object-assign');
+const isPlainObject = require('is-plain-obj')
+const isInt = require('number-is-integer')
+const extend = require('object-assign')
 const getProgram = require('./program')
+const WeakMap = require('weak-map')
 
-const WeakMap = require('es6-weak-map');
 
 let uniformsCache = setUniform.cache = new WeakMap();
 

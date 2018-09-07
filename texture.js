@@ -3,7 +3,7 @@
 const isBrowser = require('is-browser')
 const isPlainObject = require('is-plain-obj')
 const getProgram = require('./program')
-const WeakMap = require('es6-weak-map')
+const WeakMap = require('weak-map')
 
 let texturesCache = setTexture.cache = new WeakMap()
 let texturesIdx = new WeakMap()

@@ -3,7 +3,7 @@
 const isPlainObject = require('is-plain-obj');
 const extend = require('object-assign');
 const getProgram = require('./program')
-const WeakMap = require('es6-weak-map');
+const WeakMap = require('weak-map');
 
 let attributesCache = setAttribute.cache = new WeakMap();
 let attributesIdx = new WeakMap();
