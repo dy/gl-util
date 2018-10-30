@@ -25,11 +25,13 @@ module.exports = function setContext (o) {
 			container: 'container target element el canvas holder parent parentNode wrapper use ref root node',
 			gl: 'gl context webgl glContext',
 			attrs: 'attributes attrs contextAttributes',
-			pixelRatio: 'pixelRatio pxRatio px ratio pxratio pixelratio'
+			pixelRatio: 'pixelRatio pxRatio px ratio pxratio pixelratio',
+			width: 'w width',
+			height: 'h height'
 		}, true)
 	}
 
-	if (!o.pixelRatio) o.pixelRatio = window.pixelRatio || 1
+	if (!o.pixelRatio) o.pixelRatio = global.pixelRatio || 1
 
 	// make sure there is container and canvas
 	if (o.gl) {
@@ -56,10 +58,15 @@ module.exports = function setContext (o) {
 	}
 	// blank new canvas
 	else if (!o.canvas) {
-		o.container = document.body || document.documentElement
-		o.canvas = createCanvas()
-		o.container.appendChild(o.canvas)
-		resize(o)
+		if (typeof document !== 'undefined') {
+			o.container = document.body || document.documentElement
+			o.canvas = createCanvas()
+			o.container.appendChild(o.canvas)
+			resize(o)
+		}
+		else {
+			throw Error('Not DOM environment. Use headless-gl.')
+		}
 	}
 
 	// make sure there is context
@@ -83,8 +90,8 @@ module.exports = function setContext (o) {
 function resize (o) {
 	if (o.container) {
 		if (o.container == document.body) {
-			if (!document.body.style.width) o.canvas.width = o.width || (o.pixelRatio * window.innerWidth)
-			if (!document.body.style.height) o.canvas.height = o.height || (o.pixelRatio * window.innerHeight)
+			if (!document.body.style.width) o.canvas.width = o.width || (o.pixelRatio * global.innerWidth)
+			if (!document.body.style.height) o.canvas.height = o.height || (o.pixelRatio * global.innerHeight)
 		}
 		else {
 			var bounds = o.container.getBoundingClientRect()
