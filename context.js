@@ -119,7 +119,7 @@ function isContext (e) {
 }
 
 function createCanvas () {
-	let canvas = document.createElement('canvas')
+	var canvas = document.createElement('canvas')
 	canvas.style.position = 'absolute'
 	canvas.style.top = 0
 	canvas.style.left = 0
