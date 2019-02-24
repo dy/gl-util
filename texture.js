@@ -136,7 +136,7 @@ function setTexture (gl, name, options) {
 			image.src = data
 			image._src = data
 		}
-		else if (data instanceof Image && !data.complete) {
+		else if ('Image' in self && data instanceof Image && !data.complete) {
 			image = data
 		}
 
