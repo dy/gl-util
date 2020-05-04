@@ -71,16 +71,12 @@ module.exports = function setContext (o) {
 
 	// make sure there is context
 	if (!o.gl) {
-		try {
-			o.gl = o.canvas.getContext('webgl', o.attrs)
-		} catch (e) {
+		['webgl', 'experimental-webgl', 'webgl-experimental'].some(function (c) {
 			try {
-				o.gl = o.canvas.getContext('experimental-webgl', o.attrs)
-			}
-			catch (e) {
-				o.gl = o.canvas.getContext('webgl-experimental', o.attrs)
-			}
-		}
+				o.gl = o.canvas.getContext(c, o.attrs);
+			} catch (e) { /* no-op */ }
+			return o.gl;
+		});
 	}
 
 	return o.gl
