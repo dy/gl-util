@@ -1,15 +1,15 @@
 # gl-util [![unstable](http://badges.github.io/stability-badges/dist/unstable.svg)](http://github.com/badges/stability-badges)
 
-Set of practical functions for webgl.
+Set of small practical and familiar functions for WebGL that you end up doing anyways.
 
 [![npm install gl-util](https://nodei.co/npm/gl-util.png?mini=true)](https://npmjs.org/package/gl-util/)
 
 ```js
-const u = require('gl-util');
+import {context, program, attribute, uniform} from 'gl-util'
 
-let gl = u.context(canvas)
+let gl = context(canvas)
 
-let prog = u.program(gl, `
+let prog = program(gl, `
 	precision mediump float;
 
 	attribute vec2 position;
@@ -26,32 +26,30 @@ let prog = u.program(gl, `
 		gl_FragColor = color;
 	}
 `);
-u.attribute(prog, 'position', [0,0, 1,0, 0,1]);
-u.uniform(prog, 'color', [1, .2, 0, 1.]);
+attribute(prog, {position: [0,0, 1,0, 0,1]});
+uniform(prog, {color: [1, .2, 0, 1.]});
 
 gl.drawArrays(gl.TRIANGLES, 0, 3);
 ```
 
 ## API
 
-### `context(container|canvas|options?)`
+### `context(canvas, options?)`
 
-Create and/or return WebGL context for the canvas element, possibly based on options. If `container` is not defined, `document.body` is used.
+Create or get WebGL context for a canvas element, possibly based on options.
 
 | Option | Meaning |
 |---|---|
-| `canvas` | A canvas element to obtain context for. |
-| `container` | An element to create canvas in and return context for it. |
 | `width` | If specified, will set the canvas width. |
 | `height` | If specified, will set the canvas height. |
 | `pixelRatio` | Multiplier for `width` and `height`. |
 | `attributes` | Attributes object. Available attributes: `alpha`, `depth`, `stencil`, `antialias`, `premultipliedAlpha`, `preserveDrawingBuffer` and `failIfMajorPerformanceCaveat`. |
 
 ```js
-const getContext = require('gl-util/context')
+import {context} from 'gl-util'
 
 // create canvas element in the document.body and retrieve context for it
-let gl = getContext({
+let gl = context(canvas, {
 	attributes: {
 		antialias: true
 	}
@@ -63,7 +61,7 @@ let gl = getContext({
 Set active program or create a new program from vertex and fragment sources. Programs are cached for the context by source. The _WebGLProgram_ instance is returned.
 
 ```js
-const program = require('gl-util/program')
+import {program} from 'gl-util'
 
 // create and set program
 let prog = program(gl, `
@@ -90,19 +88,19 @@ let prog = program(gl, `
 program(gl, prog)
 ```
 
-### `unif = uniform(gl|program, {name: data, ...} | name?, data?)`
+### `unif = uniform(gl|program, uniforms)`
 
-Get/set uniform or multiple uniforms. Returns an object with uniform parameters: `{name, location, data, type}`. Uniforms are stored per-program instance.
+Get/set uniforms. Returns an object with uniform parameters: `{name, location, data, type}`. Uniforms are stored per-program instance.
 
 ```js
-const uniform = require('gl-util/uniform')
+import {uniform} from 'gl-util'
 
-uniform(gl, 'color', [1, .2, 0, 1]);
+let {color: {name, location, data, type}} = uniform(gl, {color: [1, .2, 0, 1]});
 ```
 
-### `txt = texture(gl, {name: params, ...} | name?, params?)`
+### `txt = texture(gl, textures)`
 
-Set texture[s] data or parameters:
+Set textures data or parameters:
 
 | Name | Meaning |
 |---|---|
@@ -119,14 +117,14 @@ Set texture[s] data or parameters:
 Returns object with texture properties `{data, index, location, minFilter, magFilter, wrapS, wrapT, width, height, format, type, texture}`.
 
 ```js
-const texture = require('gl-util/texture')
+import {texture} from 'gl-util'
 
-let {width, height} = texture(gl, 'image', './picture.gif');
+let {image: {width, height}} = texture(gl, {image: './picture.gif'});
 ```
 
-### `attr = attribute(gl, {name: params, ...} | name?, params?)`
+### `attr = attribute(gl, attributes)`
 
-Set attribute[s] data or parameters:
+Set attribute data or parameters:
 
 | Name | Default | Meaning |
 |---|---|---|
@@ -144,18 +142,25 @@ Set attribute[s] data or parameters:
 Returns attribute properties `{data, size, stride, offset, usage, type, normalized, index, target, buffer}`.
 
 ```js
-const attribute = require('gl-util/attribute')
+import {attribute} from 'gl-util'
 
-attribute(gl, 'position', [0,0,1,0,0,1]);
+let { position: { data, size, stride, offset, usage, type, normalized, index, target, buffer } }
+	= attribute(gl, {position: [0,0,1,0,0,1]});
 ```
 
-### `clear(gl, optsion?)`
+### `clear(gl, options?)`
 
 Clear the viewport.
 
+Name | Default | Meaning
+---|---|---
+`depth` | `true` | Clear depth buffer
+`stencil` | `true` | Clear stencil buffer
+`viewport` | `null` | Apply viewport. An object `{x,y,width,height}`
+
 ## Motivation
 
-There are [regl](https://github.com/regl-project/regl), [stack.gl](https://github.com/stackgl/) and many other WegGL components or frameworks, so why gl-util?
+There is [regl](https://github.com/regl-project/regl), [stack.gl](https://github.com/stackgl/) and many other WegGL components or frameworks, why gl-util?
 
 * WebGL frameworks API is usually difficult to remember, not much better than pure WebGL, although _regl_ does a great job. _gl-util_ is like functions from any WebGL tutorial - tiny, handy and already familiar.
 * _gl-util_ does not supersede WebGL API - that allows for debugging pure WebGL at any moment.
@@ -165,7 +170,7 @@ There are [regl](https://github.com/regl-project/regl), [stack.gl](https://githu
 
 ## License
 
-(c) 2018 Dmitry Yv. MIT License
+(c) 2018 Dmitry Iv. MIT License
 
 
 so
